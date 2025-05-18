@@ -184,6 +184,7 @@ const commands = {
         if (!checkArity("cl-history", 0, args, this)) return;
         localStorage.removeItem("JS-Terminal_0_commands");
         this.clear_history_state();
+        this.reset();
     },
     "javascript": function (...args) {
         // 打开JavaScript控制台命令
@@ -205,6 +206,28 @@ const commands = {
                 event.preventDefault();
             }
         });
+    },
+    "curl": async function (...args) {
+        // 从 URL 获取数据
+        if (!checkArity("curl", [1, Infinity], args, this)) return;
+        const url = args.join(" ");
+        try {
+            const response = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + url, {
+                method: 'GET',
+                headers: {
+                    'User-Agent': 'curl/7.79.1',
+                    'Accept': '*/*',
+                }
+            });
+            if (!response.ok) {
+                this.error(`Error fetching URL: ${response.status} ${response.statusText}`);
+                return;
+            }
+            const data = await response.text();
+            this.error(data);
+        } catch (error) {
+            this.error(`Error fetching URL: ${error.message}`);
+        }
     }
 }
 
