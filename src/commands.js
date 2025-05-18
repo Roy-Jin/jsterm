@@ -85,7 +85,7 @@ const commands = {
         window.peer.on("error", (err) => {
             if (err.type == "unavailable-id") {
                 window.peer = null;
-                this.error(`${i18n.get('username')} [[;#007acc;]${args[0]}] ${i18n.get('isTaken')}`);
+                this.error(`${i18n.get('username')} "${args[0]}" ${i18n.get('isTaken')}`);
             };
             if (err.type == "peer-unavailable") {
                 this.error(i18n.get('serverUnavailable'));
